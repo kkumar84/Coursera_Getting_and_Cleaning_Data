@@ -1,0 +1,71 @@
+---
+title: "Codebook"
+author: "Kunal Kumar"
+date: "June 11, 2016"
+output: pdf_document
+---
+
+We will give an overview of the approach taken to generate the tidy data set.
+For more details please refer to the documentation in the script run_analysis.R.
+Below, we describe the main steps in the analysis.
+
+## Objective
+
+We begin by importing all the data we need from multiple text files : 
+X_test.txt, y_test.txt, subject_test.txt, X_train.txt, y_train.txt, subject_train.txt, 
+activity_labels.txt, features.txt
+
+The above data is first imported as a dataframe, and then converted to the dataframe table
+format using tbl_df. The respective variable names for data from the text files listed 
+above are :
+x_test, y_test, subject_test, x_train, y_train, subject_train, activity_labels, feature_labels
+
+Here x_test contains values of 561 features for 2947 observations. Each observation 
+corresponds to a subject performing a certain activity. From the data we see that we 
+can have multiple observations of a given combination of subject and activity.
+We also notice that the 561 features are merely referred to as V1 through V561. 
+The labels can be obtained from feature_labels, which contains the mapping of V1,
+V2, etc to more descriptive feature names.
+
+The data in y_test has the activity code/label for the activity performed corresponding
+to each row in x_test. The activity description can be found using activity_labels.
+
+The objective is to combine the training and test data, and have labels for the features
+and activities. We are also interested only in the features that are means or standard deviations.
+In addition right before we output the tidy data set, we will average over multiple instances
+of a subject-activity combination.
+
+
+## Choosing columns corresponding to means and standard deviations 
+
+We are interested in extracting only the columns of the x_train and 
+x_test that contain mean or standard deviations. We obtain a logical vector 
+using grepl to look for the pattern "mean()" or "std()" in feature_labels.
+This is used to subset the columns from both x_test and x_train.
+
+## Naming columns of x_test and x_train using feature_labels
+
+We use the subset (66 in number) of the feature list i.e feature_subset. 
+This data frame table contains the mapping of feature variable numbers to
+feature variable labels. We use these to rename the columns of x_train and
+x_test. We remove the round brackets from the column names.
+
+## Merging training and test data
+We first bind the columns from the subject_test, y_test and x_test to form testdata.
+An analogous procedure yields traindata. We combine the rows of these tables
+to form the combined dataset, that we call "data".
+
+## Activity labels
+We are still missing the activity labels corresponding to the activity codes (ie numbers
+1-6). To add a column with these labels we can merge "data" with activity_labels on the
+column Activity_Code.
+
+## Creating the tidy data set
+To create the tidy data set, we group by subject and activity (in that order). We then 
+use summarize_each to find the mean of each measurement. To denote this procedure we 
+add an "avg-" at the start of each measurement column name.
+
+The final tidy data set is written to the file samsung_tidy_data.txt
+
+
+

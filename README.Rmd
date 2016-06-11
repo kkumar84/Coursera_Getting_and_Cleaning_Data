@@ -1,0 +1,24 @@
+---
+title: "README"
+author: "Kunal Kumar"
+date: "June 12, 2016"
+output: pdf_document
+---
+
+This repository contains the analysis, description and output files for 
+the "Getting and Cleaning Data" course project. 
+
+The main objective of the analysis is to form a tidy data table from a few disparate 
+sources. The data is derived from a record of accelerometer and gyroscope measurements
+from smartphones that volunteers (subjects) had attached to their waist while performing
+6 types of activities: walking, walking upstairs, walking downstairs, sitting, standing 
+and laying. 
+
+---------------------------------------------------------------------------------------
+Here is a quick description of the various files :
+
+Codebook.md : This file has details of the various variables and transformations in 
+              the R script run_analysis.R
+run_analysis.R : The R script that does all the data wrangling. It's output is the 
+                .txt file samsung_tidy_data.txt
+samsung_tidy_data.txt : Final tidy data in the form of a table stored in .txt format
